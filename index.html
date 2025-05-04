@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Engineering Showcase</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      padding: 40px;
+      margin: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 2em;
+      color: #1a73e8;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    .code-block {
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
+    }
+    .highlight {
+      color: #569cd6;
+    }
+    .comment {
+      color: #6a9955;
+    }
+    .output-block {
+      background-color: #f0f0f0;
+      border-left: 5px solid #1a73e8;
+      padding: 15px;
+      margin-top: 25px;
+      border-radius: 5px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Conversational Prompt Chain with Role Memory</h1>
+  <p>
+    This project demonstrates multi-turn prompt engineering using OpenAI's GPT model.
+    It includes prompt templates, memory chaining, and role-specific logic.
+  </p>
+
+  <div class="code-block">
+<pre><code><span class="comment"># Set your API key</span>
+openai.api_key = "DO_AS_YOU_PLEASE"
+
+<span class="comment"># System & user prompts</span>
+system_prompt = "You are a helpful assistant for productivity advice."
+user_intro_prompt = "A user will describe their productivity issue. Ask a follow-up."
+
+<span class="comment"># Initial conversation state</span>
+conversation = [
+    {"role": "system", "content": system_prompt},
+    {"role": "user", "content": user_intro_prompt}
+]
+
+<span class="comment"># User input simulation</span>
+user_input_1 = "I keep procrastinating on tasks."
+
+conversation.append({"role": "user", "content": user_input_1})
+
+<span class="comment"># Generate follow-up</span>
+response_1 = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages=conversation,
+    temperature=0.7
+)
+
+conversation.append({"role": "assistant", "content": response_1['choices'][0]['message']['content']})
+
+<span class="comment"># Simulated reply</span>
+user_input_2 = "I usually clean or check emails first."
+
+conversation.append({"role": "user", "content": user_input_2})
+
+response_2 = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages=conversation,
+    temperature=0.7
+)
+
+conversation.append({"role": "assistant", "content": response_2['choices'][0]['message']['content']})
+
+<span class="comment"># Display conversation</span>
+for msg in conversation:
+    print(f"{msg['role'].upper()}: {msg['content']}\\n")
+</code></pre>
+  </div>
+
+  <div class="output-block">
+SYSTEM: You are a helpful assistant for productivity advice.
+
+USER: A user will describe their productivity issue. Ask a follow-up.
+
+USER: I keep procrastinating on tasks.
+
+ASSISTANT: What types of tasks do you find yourself avoiding the most?
+
+USER: I usually clean or check emails first.
+
+ASSISTANT: This sounds like task avoidance through “productive procrastination.” Try scheduling hard tasks first with a 10-minute rule to build momentum.
+  </div>
+</div>
+
+</body>
+</html>
